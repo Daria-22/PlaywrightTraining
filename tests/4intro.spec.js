@@ -36,16 +36,31 @@ test('has title', async ({ page }) => {
     let currentNumberUsers = await page.locator("//span[@class='oxd-text oxd-text--span']").textContent();
     console.log(currentNumberUsers);
 
+    // @ts-ignore
     let extractNumberUsers = currentNumberUsers.replace(/\D/g, "");
     console.log(extractNumberUsers);
 
     
+    ///let lastUserOnPage = await page.locator("//div[@class='oxd-grid-4']/div[last()]");
+
+    // @ts-ignore
     
-    await elementHandle.scrollIntoViewIfNeeded();
-
-
 
     await page.waitForTimeout(3000);
 
+    let countOfCards = parseInt(extractNumberUsers);
+    let count = 0;
 
+    do {
+      //get all the cards
+      let totalElements = await page.$$("//div[@class='oxd-grid-4']/div");
+      // @ts-ignore
+      count = totalElements.length;
+      let lastUserOnPage = await page.locator('(//div[@class="oxd-sheet oxd-sheet--rounded oxd-sheet--white orangehrm-directory-card"])[last()]');
+      await lastUserOnPage.scrollIntoViewIfNeeded();
+
+    }
+    while(count < countOfCards)
+
+  await page.waitForTimeout(5000);
 }); 
