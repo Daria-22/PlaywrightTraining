@@ -26,8 +26,22 @@ await page.waitForTimeout(2000);
    console.log("The length of generted password without spaces is:", trimmedPswrd.length);
    console.log("The generated password is: ", trimmedPswrd);
 
+//    await page.locator('//label[@class="label-lowercase label-all"]').setChecked(false);
+   await unclick(page,'//label[@class="label-lowercase label-all"]');
+   await page.locator('//label[@class="label-numeric-register label-all"]').setChecked(false);
+   await page.locator('//label[@class="label-character label-all"]').setChecked(false);
+   await page.waitForTimeout(2000);
+   await page.locator('#button-password').click();
+   await page.waitForTimeout(2000);
+
     }
 );
+
+function unclick(page, locator){
+     return  page.locator(locator).setChecked(false)
+}
+
+// await unclick(page, "label[for='check-lowercase']");
 
 
 
