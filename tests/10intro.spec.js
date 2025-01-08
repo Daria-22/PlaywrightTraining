@@ -121,5 +121,10 @@ for(let price of listOfPrices){
 
 console.log(sumOfdiscounts);
 
+let numberOfDiscounts = listOfPrices.length;
+
+let averageDiscount = (sumOfdiscounts/numberOfDiscounts).toFixed(2);
+
+console.log("The average discount on the page is :", averageDiscount, "%.");
 
 });
