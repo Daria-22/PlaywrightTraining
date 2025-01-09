@@ -32,7 +32,26 @@ await page.waitForTimeout(2000);
    await page.locator('//label[@class="label-character label-all"]').setChecked(false);
    await page.waitForTimeout(2000);
    await page.locator('#button-password').click();
+   await page.waitForTimeout(1500);
+   let generatedPswr2letters = await page.$$("//li[@class='password-letter']");
+   let generatedPswr2 = [];
+   for (let letter of generatedPswr2letters) {
+    let letterValue = await letter.textContent();
+    generatedPswr2.push(letterValue);
+   };
+   let passwordstring = generatedPswr2.join("");
+   console.log(passwordstring);
+   let reg2 = /^[A-Z]+$/
+   // @ts-ignore
+   let testpassword2 = reg2.test(passwordstring);
+   expect(testpassword2).toBeTruthy();
+
+   if (testpassword2){
+    console.log("Correct password")
+   } else{console.log("Inorrect password")};
+
    await page.waitForTimeout(2000);
+
 
     }
 );
