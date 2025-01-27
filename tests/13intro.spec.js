@@ -3,7 +3,7 @@
 const { test, expect } = require('@playwright/test');
 //imported modules  
 //{} because imported part of modules 
-test('Defining the minimum number', async ({ page }) => { 
+test('Defining the maximum number', async ({ page }) => { 
     await page.goto("https://www.roboform.com/password-generator");
     //starting value of input
     let inputArray = [400, 450, 500, 550, 600, 650, 700, 750, 800];

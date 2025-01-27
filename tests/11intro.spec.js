@@ -12,12 +12,11 @@ test('Counting the number of links', async ({ page }) => {
     let counter = 0;
 
     for (let item of allNeededLinks) {
-        let valueOfItem = await item.textContent();
+        let valueOfItem = await item.textContent(); 
         let searchedString =  'ycombinator.com';
         
         if (valueOfItem === searchedString) {
             counter ++;
-
         } 
     }
     console.log(counter);
@@ -36,7 +35,7 @@ test.only('Sorting type1', async ({ page }) => {
     
     for( let datelocator of datelocators) {  
       let atributeValue =  await datelocator.getAttribute('title');
-      console.log(atributeValue); 
+      //console.log(atributeValue); 
       foundAttributes.push(atributeValue);
       if (foundAttributes.length >= 100) {
         break;
@@ -46,6 +45,34 @@ test.only('Sorting type1', async ({ page }) => {
    await page.locator(".morelink").click();
 }
 console.log(foundAttributes.length);
+console.log(foundAttributes);
+let foundAttributesClean = [];
+
+for (let attribute of foundAttributes){ 
+  const result = attribute.replace(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}).*/, "$1");
+  foundAttributesClean.push(result);
+}
+console.log(foundAttributesClean);
+
+// let sortedArray = foundAttributesClean.sort();
+// console.log(sortedArray);
+
+let sorted = true;
+
+for (let i=1; i < foundAttributesClean.length; i++){
+ let previousValue = foundAttributesClean[i-1];
+ console.log(previousValue);
+ console.log(typeof previousValue);
+ let currentValue = foundAttributesClean[i];
+ 
+ console.log(currentValue);
+ console.log(typeof currentValue);
+ if (currentValue < previousValue){
+  sorted = false;
+  break;
+ }
+ expect(sorted).toBeTruthy();
+}
 }
 );
 
