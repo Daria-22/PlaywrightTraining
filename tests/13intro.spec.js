@@ -1,33 +1,61 @@
-//this is the new file added to reporsitory, I want to get it to my local repository
+// new code refactored
 // @ts-check
 const { test, expect } = require('@playwright/test');
-//imported modules  
-//{} because imported part of modules 
-test('Defining the maximum number', async ({ page }) => { 
-    await page.goto("https://www.roboform.com/password-generator");
-    //starting value of input
-    let inputArray = [400, 450, 500, 550, 600, 650, 700, 750, 800];
-    //checking what is the starting number
-    console.log(inputArray);
-    //get locator of field for input
-    let characterInputfield = await page.locator('#number-of-characters');
-    
-    for(let input of inputArray) {
-    
-        //fill the field with input
-    await characterInputfield.fill(input.toString());
-        //read what is in the field after input
-    let charactersInField = await characterInputfield.inputValue();
-        //check what is in the field
-    console.log("Character from character field", charactersInField);
-    await page.waitForTimeout(2000);
-       //compare - if input and field after input are the same - increment the value of input
-    if(Number(charactersInField) === Number(input)){
-        console.log('Still can increase by 50')
-       } else {
-        console.log(charactersInField, 'Looks like this is the max allowed number of characters');
-        break;
-       }
-    }
+
+
+//start with defining functions
+// Function to navigate to the password generator page
+async function navigateToPasswordGenerator(page,link) {
+    await page.goto(link);
 }
-);
+
+
+// Function to generate an array based on a start value, step size, and a maximum value
+function generateInputArray(start, step, max) {
+    const array = [];
+    for (let value = start; value <= max; value += step) {
+        array.push(value);
+    }
+    return array;
+}
+
+// Function to check the maximum allowed number of characters
+async function checkMaxCharacters(page, start, step, max) {
+    // Generate the input array dynamically, using function generateInputArray
+    const inputArray = generateInputArray(start, step, max);
+    
+    // Get locator for the character input field
+    const characterInputField = await page.locator('#number-of-characters');
+
+    for (let input of inputArray) {
+        // Fill the field with the current input
+        await characterInputField.fill(input.toString());
+
+        // Read and log the value in the input field after filling
+        const charactersInField = await characterInputField.inputValue();
+        console.log("Character from character field:", charactersInField);
+
+        // Wait to simulate real user behavior
+        await page.waitForTimeout(2000);
+
+        // Compare input value with the field value
+        if (Number(charactersInField) === Number(input)) {
+            console.log('Still can increase by', step);
+        } else {
+            console.log(charactersInField, 'Looks like this is the max allowed number of characters');
+            break;
+        }
+    }   
+}
+
+test('Defining the maximum number', async ({ page }) => {   
+    
+    await navigateToPasswordGenerator(page, "https://www.roboform.com/password-generator");
+    const startValue = 100; // Starting value
+    const stepValue = 100;   // Step value
+    const maxValue = 600;   // Maximum value
+
+    await checkMaxCharacters(page, startValue, stepValue, maxValue);
+
+}
+); 

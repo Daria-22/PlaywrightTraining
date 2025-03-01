@@ -25,11 +25,11 @@ test('Counting the number of links', async ({ page }) => {
 
 );
 
-test.only('Sorting type1', async ({ page }) => {
+test.only('Sorting 1', async ({ page }) => {
     await page.goto("https://news.ycombinator.com/newest");
     let foundAttributes = [];
 
-    for(let numberOfclicks = 0; numberOfclicks <4; numberOfclicks ++) {
+    for(let numberOfclicks = 0; numberOfclicks < 4; numberOfclicks ++) {
     
     let datelocators = await page.$$("span[class='age']");
     
@@ -45,10 +45,11 @@ test.only('Sorting type1', async ({ page }) => {
    await page.locator(".morelink").click();
 }
 console.log(foundAttributes.length);
-console.log(foundAttributes);
+//console.log(foundAttributes);
 let foundAttributesClean = [];
 
 for (let attribute of foundAttributes){ 
+  // @ts-ignore
   const result = attribute.replace(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}).*/, "$1");
   foundAttributesClean.push(result);
 }
@@ -59,20 +60,22 @@ console.log(foundAttributesClean);
 
 let sorted = true;
 
-for (let i=1; i < foundAttributesClean.length; i++){
- let previousValue = foundAttributesClean[i-1];
- console.log(previousValue);
- console.log(typeof previousValue);
- let currentValue = foundAttributesClean[i];
+for (let i = 1; i < foundAttributesClean.length; i++){
+ let latestValue = foundAttributesClean[i-1];
+ console.log(latestValue, 'Latest value');
+ console.log(typeof latestValue);
  
- console.log(currentValue);
- console.log(typeof currentValue);
- if (currentValue < previousValue){
+ let earlierValue = foundAttributesClean[i];
+ console.log(earlierValue, 'Later Value');
+ console.log(typeof earlierValue);
+ 
+ if (latestValue > earlierValue){
   sorted = false;
   break;
  }
- expect(sorted).toBeTruthy();
+ 
 }
+expect(sorted).toBeTruthy();
 }
 );
 
